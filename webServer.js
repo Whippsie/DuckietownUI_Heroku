@@ -44,7 +44,7 @@ app.post('/uploads', function (req, res){
 });
 
 app.post('/downloads', function(req, res) {
-	var data = readFile("public\\files\\"+req.body.fileName);
+	var data = readFile("public/files/"+req.body.fileName);
 	res.send(data);
 })
 
