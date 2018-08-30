@@ -36,7 +36,7 @@ app.post('/uploads', function (req, res){
 	var file_name = req.body.fileName;
     var file_content = req.body.fileContent;
 	
-    var stream = fs.createWriteStream("public\\files\\"+file_name);
+    var stream = fs.createWriteStream("public/files/"+file_name);
     stream.once('open', function () {
         stream.write(file_content);
         stream.end();
