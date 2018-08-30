@@ -1,0 +1,135 @@
+/*===========https://www.w3schools.com/css/css_navbar.asp=============*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+	border-right: 1px solid #bbb;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+    background-color: #111;
+}
+li:last-child {
+    border-right: none;
+}
+
+.active {
+    background-color: #4CAF50;
+}
+/*===========https://www.w3schools.com/css/css_navbar.asp=============*/
+
+.div_radio{
+	float:left;
+	margin-right:35px;
+	width:200px;
+}
+.floatL{
+	float:left;
+}
+.hide{
+	display:none;
+}
+
+.sameline{
+	display:inline-block;
+}
+.pushLeft{
+	margin-left:75px;
+}
+.leftSpace{
+	padding-left:20px;
+}
+.topSpace{
+	margin-top:20px;
+}
+p {
+	font-weight: bold; 
+}
+.incorrect{
+    color: red;
+}
+.missing{
+	color: green;
+}
+.normal{
+	color: black;
+}
+.titleNotice{
+	color: blue;
+}
+.topMarg{
+	margin-top:20px;
+}
+.shine{
+	border: 3px solid;
+	border-color:orange;
+}
+.hide{
+	display:none;
+}
+#split3{
+	margin-bottom:100px;
+}
+
+button{
+	border-radius: 4px;
+	background-color: white;
+	color: black;
+    padding: 15px 32px;
+	border: 2px solid #008CBA;
+    text-align: center;
+    text-decoration: none;
+	font-size: 16px;
+	transition-duration: 0.4s;
+}
+
+button:hover{
+	background-color: #008CBA;
+	color:white;
+}
+
+.btn{
+	margin-top:20px;
+	display:block;
+	margin-right:10px;
+	
+}
+
+h1 { 
+color: #116466; 
+text-shadow: 2px 2px 2px #000000;
+font-family: 'Helvetica Neue', sans-serif; 
+font-size: 40px; 
+font-weight: bold; 
+letter-spacing: -1px; 
+line-height: 1; 
+text-align: center; 
+}
+
+h3 {
+	margin : 0 0 0 0;
+	padding : 0 0 0 0;
+
+	color : black;
+	font-weight: 900;
+	font-family: 'Helvetica Neue', sans-serif; 
+}
+
+body{
+  background: #D1E8E2;
+}

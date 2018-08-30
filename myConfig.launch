@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="ASCII"?>
+<canard:CanardModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:canard="http://iro.umontreal.ca/canard">
+  <links src="1" tgt="2"/>
+  <links src="3" tgt="4"/>
+  <links src="5" tgt="6"/>
+  <links src="7" tgt="8"/>
+  <links src="9" tgt="10"/>
+  <links src="11" tgt="12"/>
+  <links src="13" tgt="14"/>
+  <links src="15" tgt="4"/>
+  <links src="16" tgt="17"/>
+  <links src="18" tgt="19"/>
+  <links src="20" tgt="19"/>
+  <links src="21" tgt="22"/>
+  <links src="23" tgt="24"/>
+  <links src="25" tgt="26"/>
+  <links src="27" tgt="19"/>
+  <links src="28" tgt="26"/>
+  <links src="29" tgt="30"/>
+  <links src="31" tgt="32"/>
+  <links src="33" tgt="34"/>
+  <links src="35" tgt="36"/>
+  <links src="37" tgt="38"/>
+  <links src="39" tgt="40"/>
+  <links src="41" tgt="42"/>
+  <links src="43" tgt="4"/>
+  <blocks name="camera_node">
+    <topics name="camera_info" uniqueID="2"/>
+    <topics xsi:type="canard:BadTopic" name="image/compressed" uniqueID="4"/>
+  </blocks>
+  <blocks name="cam_info_reader_node">
+    <topics name="camera_info" uniqueID="1"/>
+    <topics xsi:type="canard:BadTopic" name="compressed_image" uniqueID="3"/>
+  </blocks>
+  <blocks name="inverse_kinematics_node">
+    <topics name="wheels_cmd" uniqueID="5"/>
+    <topics xsi:type="canard:BadTopic" name="car_cmd" uniqueID="7"/>
+    <topics name="actuator_params_received" uniqueID="9"/>
+    <topics name="actuator_params" uniqueID="42"/>
+  </blocks>
+  <blocks name="wheels_driver_node">
+    <topics name="wheels_cmd" uniqueID="6"/>
+    <topics name="radius_limit" uniqueID="11"/>
+    <topics name="wheels_cmd_executed" uniqueID="40"/>
+  </blocks>
+  <blocks name="joy_node"/>
+  <blocks name="joy_mapper_node"/>
+  <blocks name="fsm_node">
+    <topics xsi:type="canard:BadTopic" name="mode" uniqueID="31"/>
+    <topics xsi:type="canard:BadTopic" name="lane_pose_intersection_navigation" uniqueID="32"/>
+  </blocks>
+  <blocks name="car_cmd_switch_node">
+    <topics xsi:type="canard:BadTopic" name="cmd_lane_following" uniqueID="13"/>
+    <topics xsi:type="canard:BadTopic" name="cmd" uniqueID="22"/>
+  </blocks>
+  <blocks name="logic_gate_node"/>
+  <blocks name="line_detector_node">
+    <topics xsi:type="canard:BadTopic" name="image" uniqueID="15"/>
+    <topics name="transform" uniqueID="16"/>
+  </blocks>
+  <blocks name="ground_projection">
+    <topics xsi:type="canard:BadTopic" name="lineseglist_out" uniqueID="19"/>
+  </blocks>
+  <blocks name="duckiebot_visualizer">
+    <topics xsi:type="canard:BadTopic" name="segment_list" uniqueID="18"/>
+  </blocks>
+  <blocks name="lane_filter_node">
+    <topics xsi:type="canard:BadTopic" name="segment_list" uniqueID="20"/>
+    <topics xsi:type="canard:BadTopic" name="car_cmd" uniqueID="21"/>
+    <topics name="lanewidth" uniqueID="24"/>
+    <topics name="lane_pose" uniqueID="26"/>
+    <topics name="lane_pose_obstacle_avoidance" uniqueID="34"/>
+    <topics name="lane_pose_parking" uniqueID="36"/>
+    <topics name="implicit_coordination_velocity" uniqueID="38"/>
+  </blocks>
+  <blocks name="stop_line_filter_node">
+    <topics name="lanewidth" uniqueID="23"/>
+    <topics name="lane_pose" uniqueID="25"/>
+    <topics xsi:type="canard:BadTopic" name="segment_list" uniqueID="27"/>
+  </blocks>
+  <blocks name="lane_controller_node">
+    <topics name="lane_pose" uniqueID="28"/>
+    <topics name="lane_pose_intersection_navigation" uniqueID="29"/>
+    <topics name="lane_pose_obstacle_avoidance" uniqueID="33"/>
+    <topics name="lane_pose_parking" uniqueID="35"/>
+    <topics name="implicit_coordination_velocity" uniqueID="37"/>
+    <topics name="wheels_cmd_executed" uniqueID="39"/>
+    <topics name="actuator_params" uniqueID="41"/>
+  </blocks>
+  <blocks name="lane_pose_visualizer_node"/>
+  <blocks name="led_emitter_node"/>
+  <blocks name="anti_instagram_node">
+    <topics xsi:type="canard:BadTopic" name="uncorrected_image" uniqueID="43"/>
+  </blocks>
+  <flags name="Undefined" isAbstract="true">
+    <child name="veh"/>
+    <child name="config"/>
+    <child name="param_file_name"/>
+    <child name="fsm_file_name"/>
+    <child name="statistics"/>
+    <child name="loc"/>
+    <child name="line_detector_param_file_name"/>
+    <child name="odometry"/>
+    <child name="/odometry/forward_kinematics"/>
+    <child name="fsm"/>
+    <child name="odometry_learning"/>
+    <child name="/odometry_learning/kinematics"/>
+    <child name="/odometry_learning/learning"/>
+    <child name="/odometry_learning/visual_odometry"/>
+    <child name="parallel_autonomy"/>
+    <child name="global_localizer"/>
+    <child name="SLAM"/>
+    <child name="enable_statistics"/>
+  </flags>
+  <flags name="Apriltags" isAbstract="true">
+    <child name="apriltags_param_file_name"/>
+    <child name="apriltags"/>
+    <child name="/apriltags/local"/>
+    <child name="/navigation/apriltags_random"/>
+  </flags>
+  <flags name="Control" isAbstract="true">
+    <child name="visualization"/>
+    <child name="joystick"/>
+    <child name="/LED/joystick"/>
+    <child name="coordination"/>
+  </flags>
+  <flags name="Specific" isAbstract="true">
+    <child name="verbose"/>
+    <child name="map_name"/>
+    <child name="anti_instagram"/>
+    <child name="wheels"/>
+    <child name="LED"/>
+    <child name="/LED/pattern_switch"/>
+    <child name="/LED/detector"/>
+    <child name="/LED/emitter"/>
+    <child name="/LED/interpreter"/>
+    <child name="/localization/map_name"/>
+  </flags>
+  <flags name="Camera" isAbstract="true">
+    <child name="camera"/>
+    <child name="/camera/raw"/>
+    <child name="/camera/cam_info"/>
+    <child name="/camera/raw/rect"/>
+    <child name="/camera/local"/>
+  </flags>
+  <flags name="LaneFollowing" isAbstract="true">
+    <child name="lane_following"/>
+    <child name="/lane_following/line_detection"/>
+    <child name="/lane_following/ground_projection"/>
+    <child name="/lane_following/lane_filter"/>
+    <child name="/lane_following/stop_line_filter"/>
+    <child name="/lane_following/lane_controller"/>
+  </flags>
+  <flags name="Avoidance" isAbstract="true">
+    <child name="obstacle_avoidance"/>
+    <child name="/obstacle_avoidance/simple_stop"/>
+    <child name="/obstacle_avoidance/detection"/>
+    <child name="/obstacle_avoidance/safety"/>
+    <child name="vehicle_avoidance"/>
+    <child name="/vehicle_avoidance/detection"/>
+    <child name="/vehicle_avoidance/control"/>
+  </flags>
+  <flags name="Navigation" isAbstract="true">
+    <child name="navigation"/>
+    <child name="/navigation/intersection_control"/>
+    <child name="/navigation/random_sr_turns"/>
+    <child name="/navigation/graph_planner"/>
+  </flags>
+  <flags name="Localization" isAbstract="true">
+    <child name="localization"/>
+    <child name="/localization/local"/>
+    <child name="/localization/gui"/>
+  </flags>
+  <configurations>
+    <configflags value="$(env" key="//@flags.0/@child.0"/>
+    <configflags value="baseline" key="//@flags.0/@child.1"/>
+    <configflags value="default" key="//@flags.0/@child.2"/>
+    <configflags value="$(arg" key="//@flags.1/@child.0"/>
+    <configflags value="default" key="//@flags.0/@child.3"/>
+    <configflags value="true" key="//@flags.2/@child.0"/>
+    <configflags value="false" key="//@flags.3/@child.0"/>
+    <configflags value="false" key="//@flags.0/@child.4"/>
+    <configflags value="duckietown_map" key="//@flags.3/@child.1"/>
+    <configflags value="true" key="//@flags.3/@child.2"/>
+    <configflags value="-1" key="//@flags.0/@child.5"/>
+    <configflags value="$(arg" key="//@flags.0/@child.6"/>
+    <configflags value="true" key="//@flags.4/@child.0"/>
+    <configflags value="false" key="//@flags.4/@child.1"/>
+    <configflags value="true" key="//@flags.4/@child.2"/>
+    <configflags value="false" key="//@flags.4/@child.3"/>
+    <configflags value="false" key="//@flags.4/@child.4"/>
+    <configflags value="true" key="//@flags.3/@child.3"/>
+    <configflags value="true" key="//@flags.2/@child.1"/>
+    <configflags value="false" key="//@flags.0/@child.7"/>
+    <configflags value="false" key="//@flags.0/@child.8"/>
+    <configflags value="true" key="//@flags.5/@child.0"/>
+    <configflags value="true" key="//@flags.5/@child.1"/>
+    <configflags value="true" key="//@flags.5/@child.2"/>
+    <configflags value="true" key="//@flags.5/@child.3"/>
+    <configflags value="true" key="//@flags.5/@child.4"/>
+    <configflags value="true" key="//@flags.5/@child.5"/>
+    <configflags value="true" key="//@flags.0/@child.9"/>
+    <configflags value="false" key="//@flags.6/@child.0"/>
+    <configflags value="true" key="//@flags.6/@child.1"/>
+    <configflags value="true" key="//@flags.6/@child.2"/>
+    <configflags value="true" key="//@flags.6/@child.3"/>
+    <configflags value="false" key="//@flags.6/@child.4"/>
+    <configflags value="true" key="//@flags.6/@child.5"/>
+    <configflags value="true" key="//@flags.6/@child.6"/>
+    <configflags value="false" key="//@flags.1/@child.1"/>
+    <configflags value="false" key="//@flags.1/@child.2"/>
+    <configflags value="true" key="//@flags.3/@child.4"/>
+    <configflags value="false" key="//@flags.3/@child.5"/>
+    <configflags value="false" key="//@flags.3/@child.6"/>
+    <configflags value="false" key="//@flags.2/@child.2"/>
+    <configflags value="true" key="//@flags.3/@child.7"/>
+    <configflags value="false" key="//@flags.3/@child.8"/>
+    <configflags value="false" key="//@flags.0/@child.10"/>
+    <configflags value="true" key="//@flags.0/@child.11"/>
+    <configflags value="false" key="//@flags.0/@child.12"/>
+    <configflags value="false" key="//@flags.0/@child.13"/>
+    <configflags value="false" key="//@flags.2/@child.3"/>
+    <configflags value="false" key="//@flags.7/@child.0"/>
+    <configflags value="true" key="//@flags.7/@child.1"/>
+    <configflags value="true" key="//@flags.1/@child.3"/>
+    <configflags value="false" key="//@flags.7/@child.2"/>
+    <configflags value="false" key="//@flags.7/@child.3"/>
+    <configflags value="false" key="//@flags.0/@child.14"/>
+    <configflags value="false" key="//@flags.0/@child.15"/>
+    <configflags value="false" key="//@flags.0/@child.16"/>
+    <configflags value="false" key="//@flags.8/@child.0"/>
+    <configflags value="false" key="//@flags.8/@child.1"/>
+    <configflags value="open_house_dp6" key="//@flags.3/@child.9"/>
+    <configflags value="false" key="//@flags.8/@child.2"/>
+    <configflags value="$(arg" key="//@flags.0/@child.17"/>
+  </configurations>
+</canard:CanardModel>

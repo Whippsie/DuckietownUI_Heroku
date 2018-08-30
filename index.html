@@ -1,0 +1,247 @@
+<!-- Organisation : GEODES.UMONTREAL
+	 Author : Maude Sabourin
+	 Project : CRSNG - Duckietown configurations -->
+	 
+<!DOCTYPE html>
+<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="styles/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="./scripts/files.js"></script>
+	<script src="./scripts/util.js"></script>
+	<script src="./scripts/parsing.js"></script>
+	<script src="./scripts/ui.js"></script>
+	<script src="./scripts/globalvar.js"></script>
+	<script src="./scripts/objects.js"></script>
+	<script>
+		// Fetch the flags in the .txt (taken from master.launch initial arg config)
+		// Parse the data, create dynamically the UI and add the click events
+		$(document).ready(function(){
+						$.ajax({
+							url: "./flags.txt",
+							dataType: "text",
+							success: function (data) {
+									var args = preparedata(data);
+									addRadioBool(args);
+									loadMenuEvents();
+							}   	
+						});
+		});
+
+		
+		/* Called by clicking on the 'Generate GMF' Menu
+		* Makes an XMLHttpRequest to a fixed URL
+		* Send a POST request with the setup variables
+		* An Express router takes care of fetching the arguments */
+		function callJavaApp(){
+			var url = '/call-java-app';
+			var xmlHttp = new XMLHttpRequest();
+
+			xmlHttp.onreadystatechange = function () {
+				// When we have the xmlHttp answer
+				if (xmlHttp.readyState === 4) {
+					// The response should be the java stdout for node creation
+					var res = xmlHttp.responseText;
+					console.log(res);
+				}
+			}
+			xmlHttp.open("POST", url, true); // false for synchronous request
+			xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			
+			//Sending 2 parameters, jar location and name chosen by user for config file
+			xmlHttp.send('location="'+pathJar+'"&nameConfigFile='+nameConfigFile);
+		}
+
+		
+		/* Add the click events dynamically because the menu is made of hyperlink
+		 * Buttons were initially made, but this decision was made for UX purposes */
+		function loadMenuEvents(){
+			$('#menuSetupConfig').click(function() {setupShow(); return false; });
+			$('#menuGenerateConfig').click(function() {parsetoROS(nameConfigFile); return false; });
+			$('#menuLoadSeeConfig').click(function() {showLoadSeeUI(); return false; });
+			$('#menuCompareConfig').click(function() {showCompareUI(); return false; });
+			$('#menuCallJavaApp').click(function() {callJavaApp(); return false; });
+		}
+
+		/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
+		
+		/* =============== SETUP VARIABLES ================= */
+
+		// Setup the global variables that will be send to java jar
+		function sendConfig(){
+			hideAll();
+			pathJar = $('#jarFile').val();
+			nameConfigFile = $('#configName').val();
+		}
+
+		/*  =============== (END) ====  SETUP VARIABLES ================= */
+
+		/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
+
+		/* =============== LOAD AND SEE A CONFIGURATION FROM A FILE ================= */
+
+		// Empty because the logic is called directly in the file.onload for asynchronous issues
+		// See files.js -> loadFileAsText ()
+
+
+		/*  =============== (END) ====  LOAD AND SEE A CONFIGURATION FROM A FILE ================= */
+
+		/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
+
+		/* =============== COMPARE A LOADED CONFIGURATION WITH ONE OF THE DEMOS ================= */
+
+		// Prep the data structure to compare the 2 files
+		function compareConfig(){
+			// Hide the menu and show the legend
+			$("#compareDemos").toggle("blind");
+			$('#legendCompare').removeClass('hide');
+			
+			// Prepare 2 dictionnaries, one for the chosen demo
+			// One for the user's loaded configuration
+			var dictDemo = prepDemoDict();
+			var dictUser = prepConfigDict();
+			compareDict(dictDemo, dictUser);
+		}
+
+		/* Get the value chosen, fetch the file and read it
+		* Create and return a dictionary based on the data read */
+		function prepDemoDict(){
+			var selected = $('#demo_files').val();
+			var dataDemo = readFile("demos/"+selected+".launch");
+			var dictDemo = rosToDict(dataDemo);
+			return dictDemo;
+		}
+
+		/* dataUser is a global variable for asynchronous loading reasons
+		* Thus, immediatly creates the dictionnary without reading a file */
+		function prepConfigDict(){
+			var dictUser = rosToDict(dataUser);
+			return dictUser;
+		}
+
+		/* Remove the values present in the 2 dict (similar to a set)
+		* The values left in dictDemo are categorized as 'missing'
+		* The values left in dictUser are categorized as 'extra' or 'incorrect' */
+		function compareDict(dictDemo, dictUser){
+			for (var keyDemo in dictDemo){
+				var valueDemo = dictDemo[keyDemo];
+				
+				// veh is an exception as it caused problems 
+				// and this arg is present everywhere
+				if (keyDemo == "veh"){
+					continue;
+				}
+				
+				for (var keyUser in dictUser){
+					var valueUser = dictUser[keyUser];
+					// We compare both the key and the value
+					if (keyUser == keyDemo && valueUser == valueDemo){
+						delete dictDemo[keyDemo];
+						delete dictUser[keyUser];
+					}
+				}
+			}
+			
+			// Calls the UI change on all the values not matched
+			for (var keyDemo in dictDemo){
+				changeColorRadio(keyDemo,dictDemo[keyDemo],'missing');
+			}
+			
+			for (var keyUser in dictUser){
+				changeColorRadio(keyUser,dictUser[keyUser],'incorrect');
+			}
+		}
+
+		/* =============== (END) ==== COMPARE A LOADED CONFIGURATION WITH ONE OF THE DEMOS ================= */
+
+		/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
+
+	</script>
+	</head>
+<body>
+	<ul>
+	  <li class="shine"><a id="menuSetupConfig" href="">Setup environment</a></li>
+	  <li><a id="menuGenerateConfig" href="">Generate a configuration</a></li>
+	  <li><a id="menuLoadSeeConfig" href="">Load and see a configuration</a></li>
+	  <li><a id="menuCompareConfig" href="">Compare a configuration with demos</a></li>
+	  <li><a id="menuCallJavaApp" href="">Generate a GMF</a></li>
+	  <li style="float:right"><a class="active" href="about.html">About</a></li>
+	</ul>
+	<!-- SETUP MENU -->
+	<div id="setupInfos" class="hide">
+		<p> Step 1 : </p>
+		<form class="leftSpace">
+			Download the <a href="#todo">jar</a>
+		</form>
+		<p> Step 2 : </p>
+		<form class="leftSpace">
+			Write the absolute path to the jar (This will be your working folder) : <br>
+			<input type="text" id="jarFile" size="35" value="E:\Ducky_Genie\canardrunnable.jar"><br>
+		</form>
+		<p> Step 3 : </p>
+		<form class="leftSpace">
+			Choose a name for the Config File : <br>
+			<input type="text" id="configName" value="myConfig"><br>
+		</form>
+		
+		<button id="sendConfig" class="topMarg" onclick="sendConfig()">Confirm</button>
+	</div>
+
+	<!-- LOAD SEE CONFIG MENU -->
+	<div id="loadSeeConfig" class="hide">
+		<form class="leftSpace topSpace">
+		Select a .launch config file
+		</form>
+		<input type="file" id="fileToLoad">
+		<button id="btnLoadConfig" class="topMarg" onclick="loadFileAsText()">Confirm</button>
+	</div>
+
+	<!-- COMPARE WITH DEMO MENU -->
+	<div id="compareDemos" class="hide">
+		<form class="leftSpace topSpace">
+		Choose your desired demo file
+
+		<select id="demo_files" class="leftSpace">
+
+			<option value="indefinite_navigation">indefinite_navigation</option>
+			<option value="intersection">intersection</option>
+			<option value="joystick">joystick</option>
+			<option value="lane_following">lane_following</option>
+			<option value="localization">localization</option>
+			<option value="localization_frontend">localization_frontend</option>
+			<option value="localization_navigation">localization_navigation</option>
+			<option value="mission_planning">mission_planning</option>
+			<option value="obstacle_avoid">obstacle_avoid</option>
+			<option value="obstacle_avoid_nowheels">obstacle_avoid_nowheels</option>
+			<option value="obstacle_vehicle_avoid">obstacle_vehicle_avoid</option>
+			<option value="parallel_autonomy">parallel_autonomy</option>
+			<option value="stop_sign_coordination">stop_sign_coordination</option>			
+			<option value="traffic_light_coordination">traffic_light_coordination</option>	
+			<option value="vehicle_avoid">vehicle_avoid</option>	
+			<option value="vehicle_avoid_nowheels">vehicle_avoid_nowheels</option>				
+		</select>
+		</form>
+	<button id="sendConfigCompare" class="topMarg" onclick="compareConfig()">Confirm</button>
+	</div>
+
+	<!-- RADIO BUTTONS WINDOWS --> 
+	<h1 id="title"> Prototype - Configuration Duckietown </h1>
+	<div id="space">
+	</div>
+
+	<div class="floatL">
+		<div id="split3">
+			<a download="" id="downloadlinkjava" style="display: none">Download Java</a>
+			<a download="" id="downloadlinkros" style="display: none">Download ROS</a>
+		
+			<div id="legendCompare" class="hide">
+				<p class="titleNotice under">Flag is different</p>
+				<p class="missing under">In demo, not in config</p>
+				<p class="incorrect under">In config, not in demo</p>
+			</div>
+		</div>
+	</div>
+
+	</div>
+</body>
+</html>

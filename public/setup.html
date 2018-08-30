@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles/style.css">
+</head>
+<body>
+<ul>
+  <li><a href="setup.html">Setup environment</a></li>
+  <li><a href="#generate">Generate a configuration</a></li>
+  <li><a href="#load">Load and see a configuration</a></li>
+  <li><a href="#compare">Compare a configuration with demos</a></li>
+  <li><a href="#gmf">Generate a GMF</a></li>
+  <li style="float:right"><a class="active" href="about.html">About</a></li>
+</ul>
+<div>
+	<p> Step 1 : </p>
+	<!--<input type="button" id="jarFileFakeBtn" onclick="document.getElementById('jarFile').click();" value="Give jar Location" />-->
+	<p> Download the <a href="#todo">jar</a> and select the location folder </p>
+	<input type="file" id="jarFile" />
+</div>
+<div>
+	<p> Step 2 : </p>
+	<form>
+	  Choose a name for Config Name : <br>
+	  <input type="text" id="configName"><br>
+	</form>
+</div>
+</body>
