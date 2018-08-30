@@ -11,6 +11,9 @@ function executeJava(jarLocation,pathConfigFile) {
 	   * We send to the java :
 	   *	1) The relative path to the config file */
 	  var res = execSync('java -jar '+ jarLocation + ' "' + pathConfigFile+'"');/*,
+		
+		// Change execSync to exec for asynchronous call
+		// Add the callback function
 		function (error, stdout, stderr){
 			// For now, simply output the java stdout
 				console.log(stdout);
@@ -18,11 +21,11 @@ function executeJava(jarLocation,pathConfigFile) {
 				console.log("Error -> "+error);
 			}
 		});*/
-	  console.log("=================RES==============="+res);
 	  return res;
 }
 
 // Unsure if this is necessary, the documentation always provided this function
 exports.executeJava = function(location,file){
-	return executeJava(location,file);
+	var res = executeJava(location,file);
+	return res;
 }

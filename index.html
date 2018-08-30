@@ -41,11 +41,10 @@
 			xmlHttp.onreadystatechange = function () {
 				// When we have the xmlHttp answer
 				if (xmlHttp.readyState === 4) {
-					// The response should be the java stdout for node creation
+					// The response should be the GMF XMI
 					var res = xmlHttp.responseText;
-					console.out('ANOTHER TRY' + res);
-					// Au lieu de retourner le stdout, je dois retourner le xmi
-					//writeTextFile (nomchoisi,res);
+					// Note that the file exists on the webserver under /public/file/GMFXMI.canard
+					writeTextFile ("gmfXMI.canard",res);
 				}
 			}
 			xmlHttp.open("POST", url, true); // false for synchronous request
