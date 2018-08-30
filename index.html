@@ -57,21 +57,21 @@
 		 * Buttons were initially made, but this decision was made for UX purposes */
 		function loadMenuEvents(){
 			$('#menuSetupConfig').click(function() {setupShow(); return false; });
-			$('#menuGenerateConfig').click(function() {parsetoROS(nameConfigFile); return false; });
-			$('#menuLoadSeeConfig').click(function() {showLoadSeeUI(); return false; });
+			$('#menuGenerateConfig').click(function() {showGenerateUI(); return false; });
+			$('#menuSeeConfig').click(function() {showSeeUI(); return false; });
 			$('#menuCompareConfig').click(function() {showCompareUI(); return false; });
 			$('#menuCallJavaApp').click(function() {callJavaApp(); return false; });
 		}
 
 		/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
 		
-		/* =============== SETUP VARIABLES ================= */
+		/* =============== GENERATE CONFIG ================= */
 
-		// Setup the global variables that will be send to java jar
-		function sendConfig(){
+		function genConfig(){
+			var content = parsetoROS();
+			var filename = $('#nameGenConfig').val()+".launch";
+			uploadServer(filename,content);
 			hideAll();
-			pathJar = $('#jarFile').val();
-			nameConfigFile = $('#configName').val();
 		}
 
 		/*  =============== (END) ====  SETUP VARIABLES ================= */
@@ -80,8 +80,14 @@
 
 		/* =============== LOAD AND SEE A CONFIGURATION FROM A FILE ================= */
 
-		// Empty because the logic is called directly in the file.onload for asynchronous issues
-		// See files.js -> loadFileAsText ()
+		function seeConfig(){
+			hideAll();
+			if ($('#lastGenFile').is(':checked')){
+				downloadServer($('#nameGenConfig').val()+".launch");
+			}else{
+				loadFileAsText();
+			}
+		}
 
 
 		/*  =============== (END) ====  LOAD AND SEE A CONFIGURATION FROM A FILE ================= */
@@ -160,40 +166,35 @@
 	</head>
 <body>
 	<ul>
-	  <li class="shine"><a id="menuSetupConfig" href="">Setup environment</a></li>
-	  <li><a id="menuGenerateConfig" href="">Generate a configuration</a></li>
-	  <li><a id="menuLoadSeeConfig" href="">Load and see a configuration</a></li>
+	  <li><a id="menuGenerateConfig" href="">Generate a configuration file</a></li>
+	  <li><a id="menuSeeConfig" href="">See a configuration in UI</a></li>
 	  <li><a id="menuCompareConfig" href="">Compare a configuration with demos</a></li>
 	  <li><a id="menuCallJavaApp" href="">Generate a GMF</a></li>
 	  <li style="float:right"><a class="active" href="about.html">About</a></li>
 	</ul>
-	<!-- SETUP MENU -->
-	<div id="setupInfos" class="hide">
-		<p> Step 1 : </p>
-		<form class="leftSpace">
-			Download the <a href="#todo">jar</a>
+	<!-- GENERATE CONFIG FILE -->
+	
+	<div id="windowGenerate" class="hide">
+		<form class="leftSpace topSpace">
+		Select a NAME for your .launch config file 
 		</form>
-		<p> Step 2 : </p>
-		<form class="leftSpace">
-			Write the absolute path to the jar (This will be your working folder) : <br>
-			<input type="text" id="jarFile" size="35" value="E:\Ducky_Genie\canardrunnable.jar"><br>
-		</form>
-		<p> Step 3 : </p>
-		<form class="leftSpace">
-			Choose a name for the Config File : <br>
-			<input type="text" id="configName" value="myConfig"><br>
-		</form>
-		
-		<button id="sendConfig" class="topMarg" onclick="sendConfig()">Confirm</button>
+		<input type="text" id="nameGenConfig" size="25" value="MyConfig"><br>
+
+		<button id="btnGenConfig" class="topMarg" onclick="genConfig()">Confirm</button>
 	</div>
 
-	<!-- LOAD SEE CONFIG MENU -->
-	<div id="loadSeeConfig" class="hide">
+	<!-- SEE CONFIG MENU -->
+	<div id="seeConfig" class="hide">
 		<form class="leftSpace topSpace">
-		Select a .launch config file
+		<label>Select a .launch config file</label>
 		</form>
-		<input type="file" id="fileToLoad">
-		<button id="btnLoadConfig" class="topMarg" onclick="loadFileAsText()">Confirm</button>
+		<div>
+			<input class="topSpace" type="checkbox" id="lastGenFile"> Use last generated file </input>
+			<label class="leftSpace2X bold"> OR </label>
+			<label class="leftSpace2X">Upload your own file</label>
+			<input type="file" id="fileToLoad">
+		</div>
+		<button id="btnLoadConfig" class="topMarg" onclick="seeConfig()">Confirm</button>
 	</div>
 
 	<!-- COMPARE WITH DEMO MENU -->

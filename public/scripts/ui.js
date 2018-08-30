@@ -5,13 +5,13 @@
 /* =============== SETUP VARIABLES ================= */
 
 // Manage the small window to choose the setup variables
-function setupShow(){
-	if (lastclicked == "setup"){
-		$("#setupInfos").toggle("blind");
+function showGenerateUI(){
+	if (lastclicked == "generate"){
+		$("#windowGenerate").toggle("blind");
 	}else{
 		hideAll();
-		lastclicked="setup";
-		setupShow();
+		lastclicked="generate";
+		showGenerateUI();
 	}
 }
 
@@ -22,13 +22,13 @@ function setupShow(){
 /* =============== LOAD AND SEE A CONFIGURATION FROM A FILE ================= */
 
 // Manage the small window to choose the demo and load
-function showLoadSeeUI(){
-	if (lastclicked == "load"){
-		$("#loadSeeConfig").toggle("blind");
+function showSeeUI(){
+	if (lastclicked == "see"){
+		$("#seeConfig").toggle("blind");
 	}else{
 		hideAll();
-		lastclicked="load";
-		showLoadSeeUI();
+		lastclicked="see";
+		showSeeUI();
 	}
 }
 
@@ -77,9 +77,9 @@ function changeColorRadio(radioName, value, typeError){
 // Prevents the double menu opening
 function hideAll(){
 	$('#legendCompare').addClass('hide');
-	$("#setupInfos").hide("blind");
+	$("#windowGenerate").hide("blind");
 	$("#compareDemos").hide("blind");
-	$("#loadSeeConfig").hide("blind");
+	$("#seeConfig").hide("blind");
 }
 
 function uncheckAllRadio(){

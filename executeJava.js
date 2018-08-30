@@ -12,6 +12,7 @@ function executeJava(location,file) {
 	   *	1) The absolute path (to get the working directory)
 	   *	2) The name of the config file loaded by the user
 	   *	3) The name of the output for the XMI GMF (we simply take 2 and add the right extension) */
+	  location = "./canardrunnable.jar";
 	  exec('java -jar '+ location + ' "'+location+'" ' + file + '.launch ' + file + '_GMF.canard',
 		function (error, stdout, stderr){
 			// For now, simply output the java stdout

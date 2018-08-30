@@ -59,3 +59,33 @@ function readFile (fullpath){
 	});
 	return result;
 }
+
+function uploadServer(fileName, fileContent){
+	var url = '/uploads';
+	
+	var xmlHttp = new XMLHttpRequest();
+
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState === 4) {
+			console.log("Uploaded");
+		}
+	}
+	xmlHttp.open("POST", url, true); // false for synchronous request
+	xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xmlHttp.send('fileName='+fileName+'&fileContent='+fileContent);
+}
+
+function downloadServer(fileName){
+	var url = '/downloads';
+	var xmlHttp = new XMLHttpRequest();
+
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState === 4) {
+			dataUser = xmlHttp.responseText;
+			rosToUI();
+		}
+	}
+	xmlHttp.open("POST", url, true); // false for synchronous request
+	xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xmlHttp.send('fileName='+fileName);
+}

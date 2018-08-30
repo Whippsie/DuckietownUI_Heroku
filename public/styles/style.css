@@ -41,6 +41,9 @@ li:last-child {
 .floatL{
 	float:left;
 }
+.floatR{
+	float:right;
+}
 .hide{
 	display:none;
 }
@@ -54,6 +57,9 @@ li:last-child {
 .leftSpace{
 	padding-left:20px;
 }
+.leftSpace2X{
+	padding-left:40px;
+}
 .topSpace{
 	margin-top:20px;
 }
@@ -62,6 +68,9 @@ p {
 }
 .incorrect{
     color: red;
+}
+.bold{
+	font-weight: bold; 
 }
 .missing{
 	color: green;

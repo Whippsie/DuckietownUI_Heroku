@@ -3,12 +3,13 @@
 // Project : CRSNG - Duckietown configurations
 
 // Basic Express Header
-const express = require('express')
+const express = require('express');
+var fs = require('fs');
 var child = require('./executeJava.js');
-const app = express()
+const app = express();
 
 // Tags the Public folder as containing the resources
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/public'));
 
 // Allows POST arguments fetching 
 app.use(express.urlencoded({extended: true})); 
@@ -30,6 +31,42 @@ app.post('/call-java-app', function (req, res){
 	res.send(data);
 });
 
+app.post('/uploads', function (req, res){
+	var file_name = req.body.fileName;
+    var file_content = req.body.fileContent;
+	
+    var stream = fs.createWriteStream("public\\files\\"+file_name);
+    stream.once('open', function () {
+        stream.write(file_content);
+        stream.end();
+    });
+});
+
+app.post('/downloads', function(req, res) {
+	var data = readFile("public\\files\\"+req.body.fileName);
+	res.send(data);
+})
+
+function readFile( url ){
+	var res = fs.readFileSync(url, 'utf8');
+	return res;
+}
+
+/*
+function readFile( url ){
+	var res;
+	fs.readFile(url, 'utf8', function( err, data ){
+        if ( err ) {
+            console.log( 'error', err );
+        } else {
+            console.log('file read');
+            res = data;
+        }
+    });
+	console.log('res is ' + res);
+	return res;
+}
+*/
 // Routes localhost:3000 to open the index.html
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');

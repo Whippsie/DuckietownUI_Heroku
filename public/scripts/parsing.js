@@ -3,7 +3,7 @@
 // Project : CRSNG - Duckietown configurations
 
 
-function parsetoROS(filename){
+function parsetoROS(){
 	// Veh arg is always present
 	var ros = '<launch> \n \t <arg name="veh" default="$(env VEHICLE_NAME)"/> \n ';
 	// For config files, must includes the master file
@@ -16,9 +16,12 @@ function parsetoROS(filename){
 	ros += '\t </include>';
 	ros += '\n </launch>';
 
+	var filename = $('#nameGenConfig').val();
+	
 	// Write the file in the Downloads folder 
 	// Note : because of security issues, we can't write the file to a specific folder
 	writeTextFile(filename+".launch", ros, 'ros');
+	return ros;
 }
 
 /* Intermediaite function used to call the other ones
