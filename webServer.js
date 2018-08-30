@@ -28,7 +28,6 @@ app.post('/call-java-app', function (req, res){
 	var jarLocation = req.body.location
 	var pathConfigFile = req.body.nameConfigFile
 	var data = child.executeJava(jarLocation,pathConfigFile);
-	console.log(pathConfigFile);
 	res.send(data);
 });
 
