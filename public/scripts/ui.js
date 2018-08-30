@@ -105,6 +105,7 @@ function hideAll(){
 	$("#windowGenerate").hide("blind");
 	$("#seeConfig").hide("blind");
 	$("#compareDemos").hide("blind");
+	$("#selectLaunchMiniMenu").hide("blind");
 	$('#legendCompare').addClass('hide');
 }
 
