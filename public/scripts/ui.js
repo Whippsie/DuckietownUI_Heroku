@@ -101,6 +101,13 @@ function hideLast(){
 	}
 }
 
+function hideAll(){
+	$("#windowGenerate").hide("blind");
+	$("#seeConfig").hide("blind");
+	$("#compareDemos").hide("blind");
+	$('#legendCompare').addClass('hide');
+}
+
 function uncheckAllRadio(){
 	$('input:radio').each(function() {
 		jQuery(this).prop("checked", false);
