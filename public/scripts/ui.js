@@ -24,15 +24,17 @@ function showGenerateUI(){
 
 // Manage the small window to choose the demo and load
 function showSeeUI(){
+	eraseColorAllRadio();
 	if (lastclicked == "see"){
 		$("#seeConfig").toggle("blind");
 		$("#selectLaunchMiniMenu").toggle("blind");
 	}else{
 		hideLast();
-		if (lastclicked=="generate"){
-			$("#selectLaunchMiniMenu").toggle("blind");
+		if (lastclicked=="generate" || lastclicked=="off"){
+			$("#selectLaunchMiniMenu").show("blind");
 		}
 		lastclicked="see";
+		$('#legendCompare').addClass('hide');
 		$("#seeConfig").toggle("blind");
 	}
 }
@@ -51,15 +53,15 @@ function showCompareUI(){
 	}else{
 		// We come from another menu item
 		hideLast();
-		if (lastclicked=="generate"){
-			$("#selectLaunchMiniMenu").toggle("blind");
+		if (lastclicked=="generate" || lastclicked=="off"){
+			$("#selectLaunchMiniMenu").show("blind");
 		}
 		lastclicked="compare";
 		$("#compareDemos").toggle("blind");
 	}
 	
 	// Reset all colors and legend when the menu is reselected
-	eraseColorAllRadio();
+	resetUI();
 	$('#legendCompare').addClass('hide');
 }
 
@@ -81,7 +83,27 @@ function changeColorRadio(radioName, value, typeError){
 }
 /* =============== (END) ==== COMPARE A LOADED CONFIGURATION WITH ONE OF THE DEMOS ================= */
 
-/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */	
+		
+/* =============== GENERATE GMF ================= */
+		
+function showGMFUI(){	
+	if (lastclicked == "gmf"){
+		$("#genGMFDiv").toggle("blind");
+		$("#selectLaunchMiniMenu").toggle("blind");
+	}else{
+		// We come from another menu item
+		hideLast();
+		if (lastclicked=="generate" || lastclicked=="off"){
+			$("#selectLaunchMiniMenu").show("blind");
+		}
+		lastclicked="gmf";
+		$("#genGMFDiv").toggle("blind");
+	}
+}
+/* =============== (END) ==== GENERATE GMF ================= */
+
+/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */	
 
 // Prevents the double menu opening
 function hideLast(){
@@ -97,6 +119,7 @@ function hideLast(){
 			$('#legendCompare').addClass('hide');
 			break;
 		case "gmf":
+			$("#genGMFDiv").hide("blind");
 			break;
 	}
 }
@@ -106,7 +129,14 @@ function hideAll(){
 	$("#seeConfig").hide("blind");
 	$("#compareDemos").hide("blind");
 	$("#selectLaunchMiniMenu").hide("blind");
+	$("#genGMFDiv").hide("blind");
 	$('#legendCompare').addClass('hide');
+	lastclicked="off";
+}
+
+function resetUI(){
+	uncheckAllRadio();
+	eraseColorAllRadio();
 }
 
 function uncheckAllRadio(){
@@ -133,4 +163,18 @@ function updateUISingle(currCategory, flag_name, value){
 			jQuery(this).prop("checked", true).trigger("click");
 		}
 	});
+}
+
+function addRadioEvents(){
+$('input[type=radio]').on('mousedown', function(e){
+	var wasChecked = $(this).prop('checked');
+	this.turnOff = wasChecked;
+	$(this).prop('checked', !wasChecked);
+});
+
+$('input[type=radio]').on('click', function(e){
+	$(this).prop('checked', !this.turnOff);
+	this['turning-off'] = !this.turnOff;
+});
+
 }

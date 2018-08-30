@@ -24,6 +24,7 @@
 									var args = preparedata(data);
 									addRadioBool(args);
 									loadMenuEvents();
+									addRadioEvents();
 							}   	
 						});
 		});
@@ -33,7 +34,7 @@
 		* Makes an XMLHttpRequest to a fixed URL
 		* Send a POST request with the setup variables
 		* An Express router takes care of fetching the arguments */
-		function callJavaApp(){
+		function callJavaApp(pathToConfigFile){
 			var url = '/call-java-app';
 			var xmlHttp = new XMLHttpRequest();
 
@@ -42,14 +43,16 @@
 				if (xmlHttp.readyState === 4) {
 					// The response should be the java stdout for node creation
 					var res = xmlHttp.responseText;
-					console.log(res);
+					console.out(res);
+					// Au lieu de retourner le stdout, je dois retourner le xmi
+					//writeTextFile (nomchoisi,res);
 				}
 			}
 			xmlHttp.open("POST", url, true); // false for synchronous request
 			xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 			
 			//Sending 2 parameters, jar location and name chosen by user for config file
-			xmlHttp.send('location="'+pathJar+'"&nameConfigFile='+nameConfigFile);
+			xmlHttp.send('location="./canardrunnable.jar"&nameConfigFile='+pathToConfigFile);
 		}
 
 		
@@ -59,7 +62,7 @@
 			$('#menuGenerateConfig').click(function() {showGenerateUI(); return false; });
 			$('#menuSeeConfig').click(function() {showSeeUI(); return false; });
 			$('#menuCompareConfig').click(function() {showCompareUI(); return false; });
-			$('#menuCallJavaApp').click(function() {callJavaApp(); return false; });
+			$('#menuGenGMF').click(function() {showGMFUI(); return false; });
 		}
 
 		/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
@@ -81,7 +84,7 @@
 
 		function seeConfig(){
 			hideAll();
-			if ($('#lastGenFile').is(':checked')){
+			if ($('#radioLastGenFile').is(':checked')){
 				downloadServer($('#nameGenConfig').val()+".launch");
 			}else{
 				loadFileAsText('fileToLoad');
@@ -102,11 +105,11 @@
 			$('#legendCompare').removeClass('hide');
 
 			// Si on veut utiliser le fichier généré
-			if ($('#lastGenFileCompare').is(':checked')){
+			if ($('#radioLastGenFile').is(':checked')){
 				downloadServerCompare($('#nameGenConfig').val()+".launch");
 			// On load le nouveau fichier et on compare
 			}else{
-				loadFileAsTextCompare('fileToLoadCompare');
+				loadFileAsTextCompare('fileToLoad');
 			}
 			// To reuse the code, we call the same functions as seeConfig()
 			// However, we don't want to check the buttons, so we uncheck them afterwards
@@ -166,7 +169,30 @@
 		/* =============== (END) ==== COMPARE A LOADED CONFIGURATION WITH ONE OF THE DEMOS ================= */
 
 		/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
+		
+		
+		/* =============== GENERATE GMF ================= */
+		
+		function genGMF(){
+			// Hide the menu and show the legend
+			hideAll();
+			// Si on veut utiliser le fichier généré
+			if ($('#radioLastGenFile').is(':checked')){
+				downloadServerGMF($('#nameGenConfig').val()+".launch");
+			// On load le nouveau fichier et on compare
+			}else{
+				loadFileAsTextGMF('fileToLoad');
+			}
+			// To reuse the code, we call the same functions as seeConfig()
+			// However, we don't want to check the buttons, so we uncheck them afterwards
+			//uncheckAllRadio();
+			
+			// PEUT-ETRE PAS BESOIN DE CA
+			// uploadServer();
+			// downloadServer();
 
+		}
+		/* =============== (END) ==== GENERATE GMF ================= */
 	</script>
 	</head>
 <body>
@@ -174,7 +200,7 @@
 	  <li><a id="menuGenerateConfig" href="">Generate a configuration file</a></li>
 	  <li><a id="menuSeeConfig" href="">See a configuration in UI</a></li>
 	  <li><a id="menuCompareConfig" href="">Compare a configuration with demos</a></li>
-	  <li><a id="menuCallJavaApp" href="">Generate a GMF</a></li>
+	  <li><a id="menuGenGMF" href="">Generate a GMF</a></li>
 	  <li style="float:right"><a class="active" href="about.html">About</a></li>
 	</ul>
 	
@@ -233,6 +259,11 @@
 	<button id="sendConfigCompare" class="topMarg" onclick="compareConfig()">Confirm</button>
 	</div>
 
+	<!-- GEN GMF -->
+	<div id="genGMFDiv" class="hide">
+		<button id="btnGenGMF" class="topMarg" onclick="genGMF()">Confirm</button>
+	</div>
+	
 	<!-- RADIO BUTTONS WINDOWS --> 
 	<h1 id="title"> Prototype - Configuration Duckietown </h1>
 	<div id="space">

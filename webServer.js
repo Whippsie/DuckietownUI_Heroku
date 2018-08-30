@@ -25,9 +25,10 @@ app.get('/index', (req, res) => {
 * Then, calls a module used to execute a Java jar
 * Returns the data obtained as a response */
 app.post('/call-java-app', function (req, res){
-	var location = req.body.location
-	var nameConfigFile = req.body.nameConfigFile
-	var data = child.executeJava(location,nameConfigFile);
+	var jarLocation = req.body.location
+	var pathConfigFile = req.body.nameConfigFile
+	var data = child.executeJava(jarLocation,pathConfigFile);
+	console.log(pathConfigFile);
 	res.send(data);
 });
 

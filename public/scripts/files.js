@@ -131,3 +131,43 @@ function downloadServerCompare(fileName){
 	xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xmlHttp.send('fileName='+fileName);
 }
+
+
+/* VERSION FOR GMF, RIGHT NOW, UNABLE TO PASS A FUNCTION OR REUSE THE CODE BECAUSE OF ASYNCHRONOUS PROBLEMS */
+/* FOR THIS REASON, A VERY SIMILAR FUNCTION WAS MADE */
+// Code inspired from https://stackoverflow.com/questions/32701374/load-a-file-automatically-without-using-a-click-button/32701435
+// First, load the file from the computer
+function loadFileAsTextGMF(idName) {
+	var fileToLoad = document.getElementById(idName).files[0];
+	if (fileToLoad!=null){
+		var fileReader = new FileReader();
+		fileReader.onload = function(fileLoadedEvent) {
+			var data = fileLoadedEvent.target.result;
+			
+			var fileName = $('#nameGenConfig').val() + ".launch";
+			// Then, upload the file to the server so the jar can find it
+			uploadServer (fileName,data);
+			callJavaApp("public/files/"+fileName);
+		};
+		fileReader.readAsText(fileToLoad, "UTF-8");
+	}else{
+		alert('Please select a config .launch file first');
+	}
+}
+
+function downloadServerGMF(fileName){
+	var url = '/downloads';
+	var xmlHttp = new XMLHttpRequest();
+
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState === 4) {
+			var data = xmlHttp.responseText;
+			uploadServer (fileName,data);
+			callJavaApp("public/files/"+fileName);
+		}
+	}
+	xmlHttp.open("POST", url, true); // false for synchronous request
+	xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xmlHttp.send('fileName='+fileName);
+}
+
