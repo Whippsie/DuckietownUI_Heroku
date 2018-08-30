@@ -78,14 +78,14 @@
 
 		/* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
 
-		/* =============== LOAD AND SEE A CONFIGURATION FROM A FILE ================= */
+		/* =============== SEE A CONFIGURATION FROM A FILE ================= */
 
 		function seeConfig(){
 			hideAll();
 			if ($('#lastGenFile').is(':checked')){
 				downloadServer($('#nameGenConfig').val()+".launch");
 			}else{
-				loadFileAsText();
+				loadFileAsText('fileToLoad');
 			}
 		}
 
@@ -99,14 +99,20 @@
 		// Prep the data structure to compare the 2 files
 		function compareConfig(){
 			// Hide the menu and show the legend
-			$("#compareDemos").toggle("blind");
+			hideAll();
 			$('#legendCompare').removeClass('hide');
-			
-			// Prepare 2 dictionnaries, one for the chosen demo
-			// One for the user's loaded configuration
-			var dictDemo = prepDemoDict();
-			var dictUser = prepConfigDict();
-			compareDict(dictDemo, dictUser);
+
+			// Si on veut utiliser le fichier généré
+			if ($('#lastGenFileCompare').is(':checked')){
+				downloadServerCompare($('#nameGenConfig').val()+".launch");
+			// On load le nouveau fichier et on compare
+			}else{
+				loadFileAsTextCompare('fileToLoadCompare');
+			}
+			// To reuse the code, we call the same functions as seeConfig()
+			// However, we don't want to check the buttons, so we uncheck them afterwards
+			//uncheckAllRadio();
+
 		}
 
 		/* Get the value chosen, fetch the file and read it
@@ -182,9 +188,7 @@
 
 		<button id="btnGenConfig" class="topMarg" onclick="genConfig()">Confirm</button>
 	</div>
-
-	<!-- SEE CONFIG MENU -->
-	<div id="seeConfig" class="hide">
+	<div id="selectLaunchMiniMenu" class="hide">
 		<form class="leftSpace topSpace">
 		<label>Select a .launch config file</label>
 		</form>
@@ -194,17 +198,32 @@
 			<label class="leftSpace2X">Upload your own file</label>
 			<input type="file" id="fileToLoad">
 		</div>
-		<button id="btnLoadConfig" class="topMarg" onclick="seeConfig()">Confirm</button>
 	</div>
+	<!-- SEE CONFIG MENU -->
+
+
+	<div id="seeConfig" class="hide">
+	</div>
+		<button id="btnLoadConfig" class="topMarg" onclick="seeConfig()">Confirm</button>
+
 
 	<!-- COMPARE WITH DEMO MENU -->
 	<div id="compareDemos" class="hide">
+		<form class="leftSpace topSpace">
+			<label>Select a .launch config file</label>
+		</form>
+		<div>
+			<input class="topSpace" type="checkbox" id="lastGenFileCompare"> Use last generated file </input>
+			<label class="leftSpace2X bold"> OR </label>
+			<label class="leftSpace2X">Upload your own file</label>
+			<input type="file" id="fileToLoadCompare">
+		</div>
 		<form class="leftSpace topSpace">
 		Choose your desired demo file
 
 		<select id="demo_files" class="leftSpace">
 
-			<option value="indefinite_navigation">indefinite_navigation</option>
+			<option value="indefinite_navigation" selected="selected">indefinite_navigation</option>
 			<option value="intersection">intersection</option>
 			<option value="joystick">joystick</option>
 			<option value="lane_following">lane_following</option>

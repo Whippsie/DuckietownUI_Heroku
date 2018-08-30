@@ -29,8 +29,8 @@ makeTextFile = function (text) {
 };
 
 // Code inspired from https://stackoverflow.com/questions/32701374/load-a-file-automatically-without-using-a-click-button/32701435
-function loadFileAsText() {
-	var fileToLoad = document.getElementById("fileToLoad").files[0];
+function loadFileAsText(idName) {
+	var fileToLoad = document.getElementById(idName).files[0];
 	if (fileToLoad!=null){
 		var fileReader = new FileReader();
 		fileReader.onload = function(fileLoadedEvent) {
@@ -83,6 +83,48 @@ function downloadServer(fileName){
 		if (xmlHttp.readyState === 4) {
 			dataUser = xmlHttp.responseText;
 			rosToUI();
+		}
+	}
+	xmlHttp.open("POST", url, true); // false for synchronous request
+	xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xmlHttp.send('fileName='+fileName);
+}
+
+/* VERSION FOR COMPARE, RIGHT NOW, UNABLE TO PASS A FUNCTION OR REUSE THE CODE BECAUSE OF ASYNCHRONOUS PROBLEMS */
+/* FOR THIS REASON, A VERY SIMILAR FUNCTION WAS MADE */
+// Code inspired from https://stackoverflow.com/questions/32701374/load-a-file-automatically-without-using-a-click-button/32701435
+function loadFileAsTextCompare(idName) {
+	var fileToLoad = document.getElementById(idName).files[0];
+	if (fileToLoad!=null){
+		var fileReader = new FileReader();
+		fileReader.onload = function(fileLoadedEvent) {
+			// Once the reading is done, assign the result to the variable
+			dataUser = fileLoadedEvent.target.result;
+			
+			// Prepare 2 dictionnaries, one for the chosen demo
+			// One for the user's loaded configuration
+			var dictDemo = prepDemoDict();
+			var dictUser = prepConfigDict();
+			compareDict(dictDemo, dictUser);
+		};
+		fileReader.readAsText(fileToLoad, "UTF-8");
+	}else{
+		alert('Please select a config .launch file first');
+	}
+}
+
+function downloadServerCompare(fileName){
+	var url = '/downloads';
+	var xmlHttp = new XMLHttpRequest();
+
+	xmlHttp.onreadystatechange = function () {
+		if (xmlHttp.readyState === 4) {
+			dataUser = xmlHttp.responseText;
+			// Prepare 2 dictionnaries, one for the chosen demo
+			// One for the user's loaded configuration
+			var dictDemo = prepDemoDict();
+			var dictUser = prepConfigDict();
+			compareDict(dictDemo, dictUser);
 		}
 	}
 	xmlHttp.open("POST", url, true); // false for synchronous request
