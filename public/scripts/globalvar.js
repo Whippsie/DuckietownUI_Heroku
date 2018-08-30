@@ -1,7 +1,7 @@
 // Default values, can be changed
 var pathJar="E:\\Ducky_Genie\\canardrunnable.jar";
 var nameConfigFile="myConfig";
-var lastclicked = "setup"; // lastclicked \in {"setup","load","config"}
+var lastclicked = "generate"; // lastclicked \in {"generate","load","config","gmf"}
 
 // Dict used to categorize the arguments, can be edited
 var dict = {"Camera":"/camera/","Localization":"localization","Navigation":"navigation", "Avoidance":"avoidance",

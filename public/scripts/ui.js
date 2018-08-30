@@ -9,7 +9,8 @@ function showGenerateUI(){
 	if (lastclicked == "generate"){
 		$("#windowGenerate").toggle("blind");
 	}else{
-		hideAll();
+		hideLast();
+		$("#selectLaunchMiniMenu").hide("blind");
 		lastclicked="generate";
 		showGenerateUI();
 	}
@@ -25,10 +26,14 @@ function showGenerateUI(){
 function showSeeUI(){
 	if (lastclicked == "see"){
 		$("#seeConfig").toggle("blind");
+		$("#selectLaunchMiniMenu").toggle("blind");
 	}else{
-		hideAll();
+		hideLast();
+		if (lastclicked=="generate"){
+			$("#selectLaunchMiniMenu").toggle("blind");
+		}
 		lastclicked="see";
-		showSeeUI();
+		$("#seeConfig").toggle("blind");
 	}
 }
 
@@ -40,12 +45,16 @@ function showSeeUI(){
 
 // Manage the small window to choose the demo and launch comparison
 function showCompareUI(){
-	if (lastclicked == "config"){
+	if (lastclicked == "compare"){
 		$("#compareDemos").toggle("blind");
+		$("#selectLaunchMiniMenu").toggle("blind");
 	}else{
 		// We come from another menu item
-		hideAll();
-		lastclicked="config";
+		hideLast();
+		if (lastclicked=="generate"){
+			$("#selectLaunchMiniMenu").toggle("blind");
+		}
+		lastclicked="compare";
 		$("#compareDemos").toggle("blind");
 	}
 	
@@ -75,11 +84,21 @@ function changeColorRadio(radioName, value, typeError){
 /* +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+- */
 
 // Prevents the double menu opening
-function hideAll(){
-	$('#legendCompare').addClass('hide');
-	$("#windowGenerate").hide("blind");
-	$("#compareDemos").hide("blind");
-	$("#seeConfig").hide("blind");
+function hideLast(){
+	switch(lastclicked){
+		case "generate":
+			$("#windowGenerate").hide("blind");
+			break;
+		case "see":
+			$("#seeConfig").hide("blind");
+			break;
+		case "compare":
+			$("#compareDemos").hide("blind");
+			$('#legendCompare').addClass('hide');
+			break;
+		case "gmf":
+			break;
+	}
 }
 
 function uncheckAllRadio(){
