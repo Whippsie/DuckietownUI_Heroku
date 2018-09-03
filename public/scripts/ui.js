@@ -30,7 +30,7 @@ function showSeeUI(){
 		$("#selectLaunchMiniMenu").toggle("blind");
 	}else{
 		hideLast();
-		if (lastclicked=="generate" || lastclicked=="off"){
+		if ($("#selectLaunchMiniMenu").is(':hidden')){
 			$("#selectLaunchMiniMenu").show("blind");
 		}
 		lastclicked="see";
@@ -53,7 +53,7 @@ function showCompareUI(){
 	}else{
 		// We come from another menu item
 		hideLast();
-		if (lastclicked=="generate" || lastclicked=="off"){
+		if ($("#selectLaunchMiniMenu").is(':hidden')){
 			$("#selectLaunchMiniMenu").show("blind");
 		}
 		lastclicked="compare";
@@ -94,7 +94,7 @@ function showGMFUI(){
 	}else{
 		// We come from another menu item
 		hideLast();
-		if (lastclicked=="generate" || lastclicked=="off"){
+		if ($("#selectLaunchMiniMenu").is(':hidden')){
 			$("#selectLaunchMiniMenu").show("blind");
 		}
 		lastclicked="gmf";
